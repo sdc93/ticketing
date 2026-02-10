@@ -28,3 +28,9 @@ Para tickets de pago, el organizador debe completar **Stripe Connect** en `/dash
 - Acción de **reembolso** (Stripe) con opción:
   - **Reembolsar también la comisión** (refund_application_fee=true) o no.
 - Payouts: vista de ingresos por organizador (base) y revenue plataforma (fee).
+
+## Fix Vercel prerender (importante)
+Las páginas públicas (/, /explore, /e/*) usan **Supabase anon** y no dependen de Stripe.
+Solo necesitas `SUPABASE_SERVICE_ROLE_KEY` para endpoints server (check-in, admin, connect, webhook).
+
+Si Stripe aún no está configurado, el deploy no debe fallar; solo fallarán las rutas de pago.

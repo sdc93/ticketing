@@ -1,8 +1,9 @@
-import { supabaseAdmin } from "@/lib/supabase/admin";
+export const dynamic = "force-dynamic";
+import { supabasePublic } from "@/lib/supabase/public";
 import { format } from "date-fns";
 
 export default async function EventPage({ params }:{params:{slug:string}}) {
-  const supabase = supabaseAdmin();
+  const supabase = supabasePublic();
   const { data: event } = await supabase.from("events").select("*").eq("slug", params.slug).single();
   if (!event) return <div>No encontrado</div>;
   const { data: tickets } = await supabase.from("ticket_types").select("*").eq("event_id", event.id).order("price_cents",{ascending:true});

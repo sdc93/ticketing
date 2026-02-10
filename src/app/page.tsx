@@ -1,8 +1,9 @@
-import { supabaseAdmin } from "@/lib/supabase/admin";
+export const dynamic = "force-dynamic";
+import { supabasePublic } from "@/lib/supabase/public";
 import { format } from "date-fns";
 
 export default async function Home() {
-  const supabase = supabaseAdmin();
+  const supabase = supabasePublic();
   const { data: trending } = await supabase.from("events_trending").select("*").order("score",{ascending:false}).limit(8);
   const { data: feed } = await supabase.from("feed_items_view").select("*").order("created_at",{ascending:false}).limit(25);
 

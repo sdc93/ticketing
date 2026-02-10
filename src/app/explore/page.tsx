@@ -1,8 +1,9 @@
-import { supabaseAdmin } from "@/lib/supabase/admin";
+export const dynamic = "force-dynamic";
+import { supabasePublic } from "@/lib/supabase/public";
 import { format } from "date-fns";
 
 export default async function Explore({ searchParams }: { searchParams: Record<string,string|undefined> }) {
-  const supabase = supabaseAdmin();
+  const supabase = supabasePublic();
   const city = searchParams.city || "";
   const category = searchParams.category || "";
   const q = searchParams.q || "";

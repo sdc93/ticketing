@@ -2,10 +2,10 @@ import { NextResponse } from "next/server";
 import Stripe from "stripe";
 import { requireAdmin } from "@/lib/admin";
 import { supabaseAdmin } from "@/lib/supabase/admin";
-import { serverEnv } from "@/lib/env";
+import { stripeServerEnv } from "@/lib/env";
 
 export const runtime = "nodejs";
-const stripe = serverEnv.success ? new Stripe(serverEnv.data.STRIPE_SECRET_KEY, { apiVersion: "2024-06-20" }) : null;
+const stripe = stripeServerEnv.success ? new Stripe(stripeServerEnv.data.STRIPE_SECRET_KEY, { apiVersion: "2024-06-20" }) : null;
 
 export async function POST(req: Request) {
   try {

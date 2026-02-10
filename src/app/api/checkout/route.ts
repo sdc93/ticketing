@@ -1,12 +1,12 @@
 import { NextResponse } from "next/server";
 import Stripe from "stripe";
 import { supabaseAdmin } from "@/lib/supabase/admin";
-import { clientEnv, serverEnv } from "@/lib/env";
+import { clientEnv, stripeServerEnv } from "@/lib/env";
 import { signTicketPayload } from "@/lib/qr";
 import { feePerTicketCents } from "@/lib/fees";
 
 export const runtime = "nodejs";
-const stripe = serverEnv.success ? new Stripe(serverEnv.data.STRIPE_SECRET_KEY, { apiVersion: "2024-06-20" }) : null;
+const stripe = stripeServerEnv.success ? new Stripe(stripeServerEnv.data.STRIPE_SECRET_KEY, { apiVersion: "2024-06-20" }) : null;
 
 export async function POST(req: Request) {
   const { eventId, ticketTypeId, quantity } = await req.json() as any;

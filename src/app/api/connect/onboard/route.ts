@@ -1,16 +1,16 @@
 import { NextResponse } from "next/server";
 import Stripe from "stripe";
 import { supabaseAdmin } from "@/lib/supabase/admin";
-import { serverEnv } from "@/lib/env";
+import { stripeServerEnv } from "@/lib/env";
 import { getUserId } from "@/lib/auth";
 
 export const runtime = "nodejs";
-const stripe = serverEnv.success ? new Stripe(serverEnv.data.STRIPE_SECRET_KEY, { apiVersion:"2024-06-20" }) : null;
+const stripe = stripeServerEnv.success ? new Stripe(stripeServerEnv.data.STRIPE_SECRET_KEY, { apiVersion: "2024-06-20" }) : null;
 
 export async function POST(req: Request) {
   const uid = await getUserId();
   if(!uid) return NextResponse.json({ error:"Unauthorized" }, { status:401 });
-  if(!stripe || !serverEnv.success) return NextResponse.json({ error:"Stripe not configured" }, { status:500 });
+  if(!stripe || !stripeServerEnv.success) return NextResponse.json({ error:"Stripe not configured" }, { status:500 });
 
   const supabase = supabaseAdmin();
   await supabase.rpc("ensure_profile",{ uid });
@@ -25,8 +25,8 @@ export async function POST(req: Request) {
 
   const link = await stripe.accountLinks.create({
     account: accountId,
-    refresh_url: serverEnv.data.STRIPE_CONNECT_REFRESH_URL || "http://localhost:3000/dashboard/connect/refresh",
-    return_url: serverEnv.data.STRIPE_CONNECT_RETURN_URL || "http://localhost:3000/dashboard/connect/return",
+    refresh_url: stripeServerEnv.data.STRIPE_CONNECT_REFRESH_URL || "http://localhost:3000/dashboard/connect/refresh",
+    return_url: stripeServerEnv.data.STRIPE_CONNECT_RETURN_URL || "http://localhost:3000/dashboard/connect/return",
     type:"account_onboarding"
   });
 

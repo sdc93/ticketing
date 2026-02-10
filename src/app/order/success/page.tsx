@@ -1,8 +1,8 @@
-import { supabaseAdmin } from "@/lib/supabase/admin";
+import { supabasePublic } from "@/lib/supabase/public";
 export default async function Success({ searchParams }:{searchParams:{orderId?:string}}) {
   const orderId = searchParams.orderId;
   if(!orderId) return <div>Falta orderId.</div>;
-  const supabase = supabaseAdmin();
+  const supabase = supabasePublic();
   const { data: tickets } = await supabase.from("tickets").select("id,qr_token").eq("order_id", orderId).limit(20);
   return (
     <div className="space-y-4">
